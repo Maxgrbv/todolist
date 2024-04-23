@@ -1,0 +1,92 @@
+.Todo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #8758ff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.TodoForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #8758ff;
+  color: #fff;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.todo-input {
+  outline: none;
+  background: none;
+  border: 1px solid #8758ff;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  width: calc(100% - 6rem);
+  color: #fff;
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.taskContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+}
+
+.taskElement {
+  width: calc(100% - 6rem);
+  grid-area: text;
+  text-align: justify;
+  word-break: break-all;
+}
+
+.taskIconsContainer {
+  display: flex;
+}
+
+.Todo.completed {
+  background-color: #634dff;
+}
+
+.check-icon,
+.edit-icon,
+.delete-icon {
+  cursor: pointer;
+  margin-left: 0.75rem;
+}
+
+.Todo.completed .check-icon,
+.check-icon:hover {
+  color: #37ff77;
+}
+
+.edit-icon:hover {
+  color: #ff8800;
+}
+
+.delete-icon:hover {
+  color: #ff0000;
+}
+
+.check-icon:active,
+.edit-icon:active,
+.delete-icon:active {
+  transform: translateY(1px);
+}
+
+.update-btn {
+  white-space: nowrap;
+  text-align: center;
+  margin: 0.2rem 0.2rem;
+  font-size: 0.75rem;
+}

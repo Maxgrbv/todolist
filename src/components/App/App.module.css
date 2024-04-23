@@ -1,0 +1,21 @@
+.App {
+  text-align: center;
+}
+
+h1 {
+  color: #fff;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.TodoWrapper {
+  background: #2C2F33;
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 2rem;
+  border-radius: 4px;
+}
+
+.InputsWrapper {
+  margin-bottom: 2rem;
+}
