@@ -1,17 +1,21 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTodo, clearAllTodos } from "../../store/todoSlice";
 import styles from "./ControlModule.module.css";
 
 export function ControlModule({
-  addTodo,
+  // addTodo,
   searchText,
   onFindTodo,
-  clearTodos,
+  // clearAllTodos,
   filter,
   handleFilterChange,
 }) {
   const [value, setValue] = useState("");
   const [isFocusedTask, setIsFocusedTask] = useState(false);
   const [isFocusedSearch, setIsFocusedSearch] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleFocusTask = () => {
     setIsFocusedTask(true);
@@ -21,10 +25,21 @@ export function ControlModule({
     setIsFocusedTask(false);
   };
 
+  function onAddTodo() {
+    // if (value.trim().length) {
+    //   dispatch(addTodo({value}));
+    // }
+    dispatch(addTodo({value}));
+  }
+
+  function onClearTodos() {
+    dispatch(clearAllTodos())
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (value.trim() !== "") {
-      addTodo(value);
+      onAddTodo();
       setValue("");
     }
   };
@@ -47,6 +62,7 @@ export function ControlModule({
     <div>
       <div className={styles.AddTask}>
         <input
+          name="addTaskInput"
           type="text"
           className={`${styles["todo-input"]}`}
           value={value}
@@ -67,6 +83,7 @@ export function ControlModule({
 
       <div className={`${styles["search-container"]}`}>
         <input
+          name="addTaskInput12123123123"
           className={`${styles["search-input"]}`}
           placeholder={isFocusedSearch ? "" : "Search..."}
           value={searchText}
@@ -75,7 +92,7 @@ export function ControlModule({
           onBlur={handleBlurSearch}
         />
         <button
-          onClick={clearTodos}
+          onClick={onClearTodos}
           type="button"
           className={`${styles["clear-btn"]}`}
         >
