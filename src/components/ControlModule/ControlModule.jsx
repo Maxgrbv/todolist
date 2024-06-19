@@ -14,20 +14,20 @@ export function ControlModule() {
   function onFindTodo(event) {
     const search = event.target.value;
     dispatch(setSearchText({ search }));
-  }
+  };
 
   function onAddTodo() {
     dispatch(addTodo({ value }));
-  }
+  };
 
   function onClearTodos() {
     dispatch(clearAllTodos())
-  }
+  };
 
   function onFilterChange(filterData) {
     dispatch(setFilter({ filterData }));
     dispatch(setFilters({ filterData }));
-  }
+  };
 
   const handleFocusTask = () => {
     setIsFocusedTask(true);
