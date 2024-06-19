@@ -38,7 +38,7 @@ export function TaskList() {
   function onDeleteTodo(event, id) {
     event.stopPropagation();
     dispatch(deleteTodo({ id }))
-  };
+  }
 
   const filteredTodos = todos
     .filter((task) => {
