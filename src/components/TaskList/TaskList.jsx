@@ -4,32 +4,57 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import styles from "./TaskList.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTodo, editTodo, toggleComplete } from "../../store/todoSlice";
 
-export function TaskList({
-  filteredTodos,
-  toggleComplete,
-  editTodo,
-  editTask,
-  deleteTodo,
-}) {
+export function TaskList() {
+  const dispatch = useDispatch();
+  const searchText = useSelector((state) => state.todos.searchText);
+  const filter = useSelector((state) => state.todos.filter);
+  const todos = useSelector((state) => state.todos.todos);
   const [value, setValue] = useState("");
 
   const handleSubmit = (event, todo) => {
     event.preventDefault();
-    editTask(value, todo.id);
+    dispatch(editTodo({
+      id: todo.id,
+      task: value,
+    }));
     setValue("");
   };
 
-  const handleEditClick = (event, todo) => {
+  const onDoneClick = (event, todo) => {
     event.stopPropagation();
-    editTodo(todo.id);
+    dispatch(toggleComplete({ id: todo.id }))
     setValue(todo.task);
   };
 
-  const handleDeleteClick = (event, todo) => {
+  const onEditClick = (event, todo) => {
     event.stopPropagation();
-    deleteTodo(todo.id);
+    dispatch(editTodo({ id: todo.id }));
+    setValue(todo.task);
   };
+
+  function onDeleteTodo(event, id) {
+    event.stopPropagation();
+    dispatch(deleteTodo({ id }))
+  }
+
+  const filteredTodos = todos
+    .filter((task) => {
+      if (filter === "all") {
+        return true;
+      } else if (filter === "done") {
+        return task.completed;
+      } else if (filter === "undone") {
+        return !task.completed;
+      }
+    })
+    .filter(
+      (task) =>
+        task.task.startsWith(searchText) ||
+        task.task.toLowerCase().startsWith(searchText)
+    );
 
   return (
     <div className={styles.CreatedTasksContainer}>
@@ -53,16 +78,14 @@ export function TaskList({
             </form>
           ) : (
             <div
-              className={`${styles.Todo} ${
-                todo.completed ? styles.completed : ""
-              }`}
-              onClick={() => toggleComplete(todo.id)}
+              className={`${styles.Todo} ${todo.completed ? styles.completed : ""
+                }`}
+              onClick={() => dispatch(toggleComplete({ id: todo.id }))}
             >
               <div className={styles.taskContent}>
                 <p
-                  className={`${styles.taskElement} ${
-                    todo.completed ? styles.completed : ""
-                  }`}
+                  className={`${styles.taskElement} ${todo.completed ? styles.completed : ""
+                    }`}
                 >
                   {todo.task}
                 </p>
@@ -70,17 +93,17 @@ export function TaskList({
                   <FontAwesomeIcon
                     className={`${styles["check-icon"]}`}
                     icon={faCheck}
-                    onClick={() => toggleComplete(todo.id)}
+                    onClick={(event) => onDoneClick(event, todo)}
                   />
                   <FontAwesomeIcon
                     className={`${styles["edit-icon"]}`}
                     icon={faPenToSquare}
-                    onClick={(event) => handleEditClick(event, todo)}
+                    onClick={(event) => onEditClick(event, todo)}
                   />
                   <FontAwesomeIcon
                     className={`${styles["delete-icon"]}`}
                     icon={faTrash}
-                    onClick={(event) => handleDeleteClick(event, todo)}
+                    onClick={(event) => onDeleteTodo(event, todo.id)}
                   />
                 </div>
               </div>
