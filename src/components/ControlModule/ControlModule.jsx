@@ -1,21 +1,33 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addTodo, clearAllTodos } from "../../store/todoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, clearAllTodos, setFilter, setFilters, setSearchText } from "../../store/todoSlice";
 import styles from "./ControlModule.module.css";
 
-export function ControlModule({
-  // addTodo,
-  searchText,
-  onFindTodo,
-  // clearAllTodos,
-  filter,
-  handleFilterChange,
-}) {
+export function ControlModule() {
+  const dispatch = useDispatch();
+  const searchText = useSelector((state) => state.todos.searchText);
+  const filter = useSelector((state) => state.todos.filter);
   const [value, setValue] = useState("");
   const [isFocusedTask, setIsFocusedTask] = useState(false);
   const [isFocusedSearch, setIsFocusedSearch] = useState(false);
 
-  const dispatch = useDispatch();
+  function onFindTodo(event) {
+    const search = event.target.value;
+    dispatch(setSearchText({ search }));
+  }
+
+  function onAddTodo() {
+    dispatch(addTodo({ value }));
+  }
+
+  function onClearTodos() {
+    dispatch(clearAllTodos())
+  }
+
+  function onFilterChange(filterData) {
+    dispatch(setFilter({ filterData }));
+    dispatch(setFilters({ filterData }));
+  }
 
   const handleFocusTask = () => {
     setIsFocusedTask(true);
@@ -24,17 +36,6 @@ export function ControlModule({
   const handleBlurTask = () => {
     setIsFocusedTask(false);
   };
-
-  function onAddTodo() {
-    // if (value.trim().length) {
-    //   dispatch(addTodo({value}));
-    // }
-    dispatch(addTodo({value}));
-  }
-
-  function onClearTodos() {
-    dispatch(clearAllTodos())
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -104,28 +105,25 @@ export function ControlModule({
         <h4 className={styles.TasksHeader}>Your daily tasks:</h4>
         <button
           type="button"
-          onClick={() => handleFilterChange("all")}
-          className={`${styles["filter-buttons"]} ${
-            filter === "all" ? styles["active"] : ""
-          }`}
+          onClick={() => onFilterChange("all")}
+          className={`${styles["filter-buttons"]} ${filter === "all" ? styles["active"] : ""
+            }`}
         >
           All
         </button>
         <button
           type="button"
-          onClick={() => handleFilterChange("done")}
-          className={`${styles["filter-buttons"]} ${
-            filter === "done" ? styles["active"] : ""
-          }`}
+          onClick={() => onFilterChange("done")}
+          className={`${styles["filter-buttons"]} ${filter === "done" ? styles["active"] : ""
+            }`}
         >
           Done
         </button>
         <button
           type="button"
-          onClick={() => handleFilterChange("undone")}
-          className={`${styles["filter-buttons"]} ${
-            filter === "undone" ? styles["active"] : ""
-          }`}
+          onClick={() => onFilterChange("undone")}
+          className={`${styles["filter-buttons"]} ${filter === "undone" ? styles["active"] : ""
+            }`}
         >
           Undone
         </button>
